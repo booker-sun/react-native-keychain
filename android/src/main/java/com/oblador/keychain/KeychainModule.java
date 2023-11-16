@@ -612,13 +612,18 @@ public class KeychainModule extends ReactContextBaseJavaModule {
       String promptInfoDescription = promptInfoOptionsMap.getString(AuthPromptOptions.DESCRIPTION);
       promptInfoBuilder.setDescription(promptInfoDescription);
     }
-    if (null != promptInfoOptionsMap && promptInfoOptionsMap.hasKey(AuthPromptOptions.CANCEL)) {
-      String promptInfoNegativeButton = promptInfoOptionsMap.getString(AuthPromptOptions.CANCEL);
-      promptInfoBuilder.setNegativeButtonText(promptInfoNegativeButton);
+    
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+      // https://developer.android.com/reference/androidx/biometric/BiometricPrompt.PromptInfo.Builder#setAllowedAuthenticators(int)
+      /* PromptInfo is only used in Biometric-enabled RSA storage and can only be unlocked by a strong biometric */
+      promptInfoBuilder.setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_STRONG | BiometricManager.Authenticators.DEVICE_CREDENTIAL);
+    } else {
+      if (null != promptInfoOptionsMap && promptInfoOptionsMap.hasKey(AuthPromptOptions.CANCEL)) {
+        String promptInfoNegativeButton = promptInfoOptionsMap.getString(AuthPromptOptions.CANCEL);
+        promptInfoBuilder.setNegativeButtonText(promptInfoNegativeButton);
+      }
+      promptInfoBuilder.setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_STRONG);
     }
-
-    /* PromptInfo is only used in Biometric-enabled RSA storage and can only be unlocked by a strong biometric */
-    promptInfoBuilder.setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_STRONG);
 
     /* Bypass confirmation to avoid KeyStore unlock timeout being exceeded when using passive biometrics */
     promptInfoBuilder.setConfirmationRequired(false);

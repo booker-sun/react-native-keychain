@@ -22,7 +22,7 @@ const ACCESS_CONTROL_MAP = [
 ];
 const ACCESS_CONTROL_MAP_ANDROID = [
   null,
-  Keychain.ACCESS_CONTROL.BIOMETRY_CURRENT_SET,
+  Keychain.ACCESS_CONTROL.BIOMETRY_ANY_OR_DEVICE_PASSCODE,
 ];
 const SECURITY_LEVEL_OPTIONS = ['Any', 'Software', 'Hardware'];
 const SECURITY_LEVEL_MAP = [
@@ -89,9 +89,8 @@ export default class KeychainExample extends Component {
       const options = {
         authenticationPrompt: {
           title: 'Authentication needed',
-          subtitle: 'Subtitle',
+          subtitle: '生物認証を行ってください',
           description: 'Some descriptive text',
-          cancel: 'Cancel',
         },
       };
       const credentials = await Keychain.getGenericPassword(options);
