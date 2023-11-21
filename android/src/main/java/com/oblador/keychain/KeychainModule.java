@@ -613,7 +613,7 @@ public class KeychainModule extends ReactContextBaseJavaModule {
       promptInfoBuilder.setDescription(promptInfoDescription);
     }
     
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q || Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
       // https://developer.android.com/reference/androidx/biometric/BiometricPrompt.PromptInfo.Builder#setAllowedAuthenticators(int)
       /* PromptInfo is only used in Biometric-enabled RSA storage and can only be unlocked by a strong biometric */
       promptInfoBuilder.setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_STRONG | BiometricManager.Authenticators.DEVICE_CREDENTIAL);
