@@ -53,4 +53,9 @@ public class DeviceAvailability {
     // before api28
     return context.checkSelfPermission(Manifest.permission.USE_FINGERPRINT) == PERMISSION_GRANTED;
   }
+
+  public static boolean isPinOrFingerprintSet(@NonNull final Context context) {
+      KeyguardManager km = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
+      return km != null && km.isKeyguardSecure();
+  }
 }

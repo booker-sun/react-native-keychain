@@ -737,7 +737,7 @@ public class KeychainModule extends ReactContextBaseJavaModule {
   /* package */ CipherStorage getCipherStorageForCurrentAPILevel(final boolean useBiometry)
     throws CryptoFailedException {
     final int currentApiLevel = Build.VERSION.SDK_INT;
-    final boolean isBiometry = useBiometry && (isFingerprintAuthAvailable() || isFaceAuthAvailable() || isIrisAuthAvailable());
+    final boolean isBiometry = useBiometry && (isFingerprintAuthAvailable() || isFaceAuthAvailable() || isIrisAuthAvailable() || isPinOrFingerprintSet());
     CipherStorage foundCipher = null;
 
     for (CipherStorage variant : cipherStorageMap.values()) {
@@ -813,6 +813,11 @@ public class KeychainModule extends ReactContextBaseJavaModule {
   /** True - if iris recognition hardware available and configured, otherwise false. */
   /* package */ boolean isIrisAuthAvailable() {
     return DeviceAvailability.isStrongBiometricAuthAvailable(getReactApplicationContext()) && DeviceAvailability.isIrisAuthAvailable(getReactApplicationContext());
+  }
+
+  /** True - if Pin or Password enable */
+  /* package */ boolean isPinOrFingerprintSet() {
+    return DeviceAvailability.isPinOrFingerprintSet(getReactApplicationContext());
   }
 
   /** Is secured hardware a part of current storage or not. */
