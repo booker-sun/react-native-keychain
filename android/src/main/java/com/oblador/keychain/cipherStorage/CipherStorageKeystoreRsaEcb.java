@@ -242,7 +242,7 @@ public class CipherStorageKeystoreRsaEcb extends CipherStorageBase {
       .setKeySize(keySize);
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-      keyGenParameterSpecBuilder.setUserAuthenticationParameters(validityDuration, KeyProperties.AUTH_BIOMETRIC_STRONG);
+      keyGenParameterSpecBuilder.setUserAuthenticationValidityDurationSeconds(validityDuration);
     } else {
       keyGenParameterSpecBuilder.setUserAuthenticationValidityDurationSeconds(validityDuration);
     }
