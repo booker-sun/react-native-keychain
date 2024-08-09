@@ -252,6 +252,24 @@ public class KeychainModule extends ReactContextBaseJavaModule {
     setGenericPassword(service, username, password, options, promise);
   }
 
+  @ReactMethod
+  public void warmupForOptions(@Nullable final ReadableMap options,
+                                           @NonNull final String username,
+                                           @NonNull final String password,
+                                           @NonNull final Promise promise) {
+    Thread thread = new Thread(() -> {
+        final long startTime = System.nanoTime();
+        Log.v(KEYCHAIN_MODULE, "warming up keystore at" + startTime);
+        final String service = getServiceOrDefault(options);
+        setGenericPassword(service, username, password, options, promise);
+        Log.v(KEYCHAIN_MODULE, "warming up keystore takes: " +
+        TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startTime) +
+        " ms");
+      });
+    thread.setDaemon(true);
+    thread.start();
+  }
+
   /** Get Cipher storage instance based on user provided options. */
   @NonNull
   private CipherStorage getSelectedStorage(@Nullable final ReadableMap options)

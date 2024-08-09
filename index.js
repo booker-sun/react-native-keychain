@@ -188,6 +188,15 @@ export function setGenericPassword(
   );
 }
 
+export function warmup(
+  username: string,
+  password: string,
+  serviceOrOptions?: string | Options
+): Promise<false | Result> {
+  const options = normalizeOptions(serviceOrOptions);
+  return RNKeychainManager.warmupForOptions(options, username, password);
+}
+
 /**
  * Fetches login combination for `service`.
  * @param {object} options A keychain options object.
@@ -390,4 +399,5 @@ export default {
   resetGenericPassword,
   requestSharedWebCredentials,
   setSharedWebCredentials,
+  warmup,
 };
